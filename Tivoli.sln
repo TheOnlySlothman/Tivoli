@@ -1,0 +1,42 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tivoli.Dal", "Tivoli.Dal\Tivoli.Dal.csproj", "{CC6978CC-6CE7-468A-B416-8D8A2C71510A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tivoli.Models", "Tivoli.Models\Tivoli.Models.csproj", "{58195EB2-B9D4-41AD-9C49-67637C109FDE}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Admin", "Admin", "{D9D23C0D-2B02-4C90-8B3A-43633CA686BC}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Customer", "Customer", "{8FF20ADB-1029-4C12-AD23-CC192C07866E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tivoli.AdminApi", "Tivoli.AdminApi\Tivoli.AdminApi.csproj", "{49122DB1-D56A-45BD-AE73-C10A507DBD2B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tivoli.AdminTests", "Tivoli.AdminTests\Tivoli.AdminTests.csproj", "{D2A6E908-F8F1-4393-9598-732221461223}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{CC6978CC-6CE7-468A-B416-8D8A2C71510A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CC6978CC-6CE7-468A-B416-8D8A2C71510A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CC6978CC-6CE7-468A-B416-8D8A2C71510A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CC6978CC-6CE7-468A-B416-8D8A2C71510A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{58195EB2-B9D4-41AD-9C49-67637C109FDE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{58195EB2-B9D4-41AD-9C49-67637C109FDE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{58195EB2-B9D4-41AD-9C49-67637C109FDE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{58195EB2-B9D4-41AD-9C49-67637C109FDE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{49122DB1-D56A-45BD-AE73-C10A507DBD2B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{49122DB1-D56A-45BD-AE73-C10A507DBD2B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{49122DB1-D56A-45BD-AE73-C10A507DBD2B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{49122DB1-D56A-45BD-AE73-C10A507DBD2B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D2A6E908-F8F1-4393-9598-732221461223}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D2A6E908-F8F1-4393-9598-732221461223}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D2A6E908-F8F1-4393-9598-732221461223}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D2A6E908-F8F1-4393-9598-732221461223}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{49122DB1-D56A-45BD-AE73-C10A507DBD2B} = {D9D23C0D-2B02-4C90-8B3A-43633CA686BC}
+		{D2A6E908-F8F1-4393-9598-732221461223} = {D9D23C0D-2B02-4C90-8B3A-43633CA686BC}
+	EndGlobalSection
+EndGlobal
