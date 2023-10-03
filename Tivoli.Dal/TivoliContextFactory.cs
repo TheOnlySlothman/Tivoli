@@ -21,10 +21,10 @@ public class TivoliContextFactory : IDesignTimeDbContextFactory<TivoliContext>
             .SetBasePath(Directory.GetCurrentDirectory())
             .AddJsonFile("appsettings.json")
             .Build();
-        
+
         string? connectionString = configuration
             .GetConnectionString("sqlConnection");
-        
+
         DbContextOptionsBuilder<TivoliContext> optionsBuilder = new();
         optionsBuilder.UseSqlServer(connectionString);
 

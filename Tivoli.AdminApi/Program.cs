@@ -1,9 +1,6 @@
-using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using Tivoli.AdminApi;
 using Tivoli.Dal;
 using Tivoli.Dal.Repo;
-using Tivoli.Models.Entity;
 
 // ReSharper disable SuggestVarOrType_SimpleTypes
 
@@ -14,11 +11,6 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDbContext<DbContext, TivoliContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("sqlConnection")));
 builder.Services.AddTransient<UnitOfWork>();
-builder.Services.AddScoped<UserManager<Customer>>();
-builder.Services.AddAuthentication();
-
-builder.Services.ConfigureIdentity();
-// builder.Services.AddIdentity<Customer, IdentityRole>();
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -46,6 +38,6 @@ app.Run();
 ///    Redeclaration of Program class to change access modifier to public for use in tests.
 /// </summary>
 // ReSharper disable once UnusedType.Global
-public partial class Program
+public abstract partial class Program
 {
 }

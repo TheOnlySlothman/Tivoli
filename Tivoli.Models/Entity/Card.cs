@@ -25,21 +25,27 @@ public class Card : IEntity
 
     /// <inheritdoc />
     public Guid Id { get; set; }
-    
+
     /// <summary>
-    ///     Id of the customer that owns the card.
+    ///     Gets or sets id of the customer that owns the card.
     /// </summary>
     public Guid? CustomerId { get; set; }
-    
+
     /// <summary>
-    ///   The customer that owns the card.
+    ///   Gets or sets the customer that owns the card.
     /// </summary>
     public Customer? Customer { get; set; }
 
     /// <summary>
-    ///    The card data.
+    ///    Gets or sets the card data.
     /// </summary>
     public string CardData { get; set; } = "";
-    
-    public byte this[int x, int y, int z] => (byte)CardData[x * 64 + y * 16 + z];
+
+    /// <summary>
+    ///   The card data as a byte array.
+    /// </summary>
+    /// <param name="sector">Sector of card.</param>
+    /// <param name="block">Block of card.</param>
+    /// <param name="byte">Byte of card.</param>
+    public byte this[int sector, int block, int @byte] => (byte)CardData[sector * 64 + block * 16 + @byte];
 }

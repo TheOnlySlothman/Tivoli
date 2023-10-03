@@ -6,14 +6,14 @@ using Tivoli.Models.Entity;
 namespace Tivoli.AdminApi.Controllers;
 
 /// <summary>
-///    Controller for <see cref="Card"/> entity.
+///   Controller for <see cref="Customer"/> entity.
 /// </summary>
 [Controller]
 [Route("[controller]")]
-public class CardController : BaseCrudController<Card, CardDto>
+public class CustomerController : BaseCrudController<Customer, CustomerDto>
 {
     /// <inheritdoc />
-    public CardController(UnitOfWork unitOfWork) : base(unitOfWork, uow => uow.Cards)
+    public CustomerController(UnitOfWork unitOfWork) : base(unitOfWork, uow => uow.Customers)
     {
     }
 }

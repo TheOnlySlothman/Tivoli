@@ -8,20 +8,17 @@ namespace Tivoli.AdminTests.Unit.Repo;
 public class CardRepoUnitTests : BaseRepoUnitTests<Card>
 {
     protected override BaseRepo<Card> Repo => UnitOfWork.Cards;
+
     protected override Card CreateModel()
     {
-        byte[,,] data = new byte[16, 4, 16];
-        for (byte i = 0; i < 16; i++)
-        for (byte j = 0; j < 4; j++)
-        for (byte k = 0; k < 16; k++)
-            data[i, j, k] = (byte)(j * 16 + k);
+        string data = string.Join("", Enumerable.Range(0, 1024).Select(x => (char)(byte)x));
         Customer customer = new()
         {
             Id = new Guid(),
             Email = "Test@Test.com"
         };
-        
-        return new Card(data.ToString(), customer);
+
+        return new Card(data, customer);
     }
 
     protected override Card UpdateModel(Card model)

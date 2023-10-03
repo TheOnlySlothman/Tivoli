@@ -1,5 +1,4 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Tivoli.Models;
 using Tivoli.Models.Entity;
 
 // ReSharper disable UnusedMember.Local
@@ -21,7 +20,7 @@ public class TivoliContext : DbContext
 
     private DbSet<Customer> Customers { get; set; } = null!;
     private DbSet<Card> Cards { get; set; } = null!;
-    
+
     // protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     // {
     //     // optionsBuilder.UseSqlServer("Server=localhost;Database=Tivoli;Trusted_Connection=True;");

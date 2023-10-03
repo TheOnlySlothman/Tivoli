@@ -1,5 +1,4 @@
 ﻿using Tivoli.Models.Entity;
-using Xunit;
 using Assert = Xunit.Assert;
 
 namespace Tivoli.AdminTests.Unit.Model;
@@ -10,22 +9,18 @@ public class CardUnitTests
     public void ConstructCardWithArray()
     {
         // Arrange
-        byte[,,] data = new byte[16, 4, 16];
-        
-        for (byte i = 0; i < 16; i++)
-        for (byte j = 0; j < 4; j++)
-        for (byte k = 0; k < 16; k++)
-            data[i, j, k] = (byte)(j * 16 + k);
-        
+        string data = string.Join("", Enumerable.Range(0, 1024).Select(x => (char)(byte)x));
+
         Customer customer = new()
         {
-            Id = new Guid(),
+            Id = Guid.NewGuid(),
             Email = "Test@Test.com"
         };
         // Act
-        Card model = new(data.ToString(), customer);
+        Card model = new(data, customer);
         // Assert
-        Assert.Equal(data.ToString(), model.CardData);
+        Assert.Equal(data, model.CardData);
+        Assert.Equal(1024, model.CardData.Length);
         Assert.Equal(customer, model.Customer);
     }
 }

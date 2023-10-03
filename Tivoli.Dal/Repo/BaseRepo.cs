@@ -55,7 +55,7 @@ public class BaseRepo<T> : IRepo<T> where T : class, IEntity, new()
 
         return query.First();
     }
-    
+
     /// <inheritdoc />
     public T? GetWithRelated(Expression<Func<T, bool>> predicate, params Expression<Func<T, object?>>[] relations)
     {
@@ -67,7 +67,6 @@ public class BaseRepo<T> : IRepo<T> where T : class, IEntity, new()
 
     /// <inheritdoc />
     /// <exception cref="ArgumentException">Id is empty.</exception>
-    
     public T GetAsNoTracking(Guid id)
     {
         if (id == Guid.Empty)
@@ -134,11 +133,10 @@ public class BaseRepo<T> : IRepo<T> where T : class, IEntity, new()
     /// <inheritdoc />
     /// <exception cref="ArgumentNullException">Entity is null.</exception>
     /// <exception cref="KeyNotFoundException">Entity was not found.</exception>
-
     public T Update(T entity)
     {
         if (entity is null) throw new ArgumentNullException(nameof(entity));
-        
+
         if (entity.Id == Guid.Empty || !Exists(entity.Id)) throw new KeyNotFoundException($"No {typeof(T).Name} with id {entity.Id} found");
         return _dbSet.Update(entity).Entity;
     }

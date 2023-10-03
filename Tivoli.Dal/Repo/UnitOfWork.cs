@@ -1,5 +1,4 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Tivoli.Models;
 using Tivoli.Models.Entity;
 
 namespace Tivoli.Dal.Repo;
@@ -23,41 +22,38 @@ public class UnitOfWork : IUnitOfWork
     }
 
     /// <summary>
-    ///     Repository for customers.
+    ///     Gets the repository for customers.
     /// </summary>
     public BaseRepo<Customer> Customers { get; }
 
     /// <summary>
-    ///    Repository for cards.
+    ///    Gets the repository for cards.
     /// </summary>
     public BaseRepo<Card> Cards { get; }
-    
-    /// <summary>
-    ///   Save changes to database.
-    /// </summary>
+
+    /// <inheritdoc />
     public void SaveChanges()
     {
         _context.SaveChanges();
     }
-    
-    /// <summary>
-    ///  Check if database is connected.
-    /// </summary>
-    /// <returns><c>true</c> if UnitOfWork can connect to database; otherwise false.</returns>
+
+    /// <inheritdoc />
     public bool IsConnected()
     {
         return _context.Database.CanConnect();
     }
 }
 
+/// <summary>
+///   Unit of work for all repositories.
+/// </summary>
 public interface IUnitOfWork
 {
-    
     /// <summary>
     ///   Save changes to database.
     /// </summary>
     void SaveChanges();
-    
+
     /// <summary>
     ///  Check if database is connected.
     /// </summary>

@@ -3,7 +3,6 @@ using Microsoft.EntityFrameworkCore;
 using Tivoli.Dal;
 using Tivoli.Dal.Repo;
 using Tivoli.Models;
-using Xunit;
 
 namespace Tivoli.AdminTests.Unit.Repo;
 

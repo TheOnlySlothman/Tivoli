@@ -1,7 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Tivoli.Dal;
 using Tivoli.Dal.Repo;
-using Xunit;
 
 namespace Tivoli.AdminTests.Unit;
 
@@ -26,10 +25,10 @@ public class UnitOfWorkUnitTest
     {
         // Arrange
         UnitOfWork unitOfWork = CreateUnitOfWork();
-        
+
         // Act
         bool result = unitOfWork.IsConnected();
-        
+
         // Assert
         Assert.True(result);
     }

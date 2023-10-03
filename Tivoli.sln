@@ -10,7 +10,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Customer", "Customer", "{8F
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tivoli.AdminApi", "Tivoli.AdminApi\Tivoli.AdminApi.csproj", "{49122DB1-D56A-45BD-AE73-C10A507DBD2B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tivoli.AdminTests", "Tivoli.AdminTests\Tivoli.AdminTests.csproj", "{D2A6E908-F8F1-4393-9598-732221461223}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tivoli.Tests", "Tivoli.Tests\Tivoli.Tests.csproj", "{D2A6E908-F8F1-4393-9598-732221461223}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tivoli.CustomerApi", "Tivoli.CustomerApi\Tivoli.CustomerApi.csproj", "{31F761BB-63D1-4A4C-BFFA-35E2B04EBBB8}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -34,9 +36,13 @@ Global
 		{D2A6E908-F8F1-4393-9598-732221461223}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D2A6E908-F8F1-4393-9598-732221461223}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D2A6E908-F8F1-4393-9598-732221461223}.Release|Any CPU.Build.0 = Release|Any CPU
+		{31F761BB-63D1-4A4C-BFFA-35E2B04EBBB8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{31F761BB-63D1-4A4C-BFFA-35E2B04EBBB8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{31F761BB-63D1-4A4C-BFFA-35E2B04EBBB8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{31F761BB-63D1-4A4C-BFFA-35E2B04EBBB8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{49122DB1-D56A-45BD-AE73-C10A507DBD2B} = {D9D23C0D-2B02-4C90-8B3A-43633CA686BC}
-		{D2A6E908-F8F1-4393-9598-732221461223} = {D9D23C0D-2B02-4C90-8B3A-43633CA686BC}
+		{31F761BB-63D1-4A4C-BFFA-35E2B04EBBB8} = {8FF20ADB-1029-4C12-AD23-CC192C07866E}
 	EndGlobalSection
 EndGlobal

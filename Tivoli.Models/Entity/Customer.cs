@@ -9,4 +9,13 @@ public class Customer : IdentityUser<Guid>, IEntity
 {
     /// <inheritdoc cref="IEntity"/>
     public override Guid Id { get; set; }
+
+    /// <summary>
+    ///   Constructor for <see cref="Customer"/> class.
+    /// </summary>
+    public Customer()
+    {
+    }
+
+    public List<Card> Cards { get; set; } = new();
 }

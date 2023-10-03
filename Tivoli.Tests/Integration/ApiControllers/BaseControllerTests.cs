@@ -1,7 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc.Testing;
-using Microsoft.VisualStudio.TestPlatform.TestHost;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
+using Tivoli.Dal;
 using Tivoli.Dal.Repo;
-using Xunit;
 using Xunit.Abstractions;
 
 namespace Tivoli.AdminTests.Integration.ApiControllers;
@@ -9,6 +10,7 @@ namespace Tivoli.AdminTests.Integration.ApiControllers;
 public abstract class BaseControllerTests : IClassFixture<CustomWebApplicationFactory<Program>>
 {
     protected readonly UnitOfWork UnitOfWork;
+    protected readonly DbContext Context;
     protected readonly HttpClient Client;
     protected abstract string ControllerName { get; }
     private readonly CustomWebApplicationFactory<Program> _factory;
@@ -21,25 +23,21 @@ public abstract class BaseControllerTests : IClassFixture<CustomWebApplicationFa
         {
             AllowAutoRedirect = false
         });
-        
-        try
+
+        using (IServiceScope scope = _factory.Services.CreateScope())
         {
-            UnitOfWork = _factory.Services.GetService(typeof(UnitOfWork)) as UnitOfWork ??
-                         throw new InvalidOperationException();
-        }
-        catch (Exception e)
-        {
-            Console.WriteLine(e);
-            throw;
+            UnitOfWork = scope.ServiceProvider.GetRequiredService<UnitOfWork>();
+            Context = scope.ServiceProvider.GetRequiredService<DbContext>();
         }
 
         TestOutputHelper = testOutputHelper;
     }
 
+
     /// <summary>
-    /// Combines the parts into a url. If the first part ends with a slash, it is removed. If the second part starts with a slash, it is removed.
+    ///     Combines the parts into a url. If the first part ends with a slash, it is removed. If the second part starts with a slash, it is removed.
     /// </summary>
-    /// <param name="parts">TODO</param>
+    /// <param name="parts">Parts to combine to a url.</param>
     /// <returns>The combined string.</returns>
     protected static string CombineUrl(params string[] parts)
     {
