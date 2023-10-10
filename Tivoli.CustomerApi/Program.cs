@@ -1,13 +1,9 @@
-﻿using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Identity.Web;
+﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
-using Tivoli.CustomerApi;
-using Tivoli.CustomerApi.Services;
+using Tivoli.BLL;
+using Tivoli.BLL.Services;
 using Tivoli.Dal;
 using Tivoli.Dal.Repo;
-using Tivoli.Models.Entity;
 
 // ReSharper disable SuggestVarOrType_SimpleTypes
 

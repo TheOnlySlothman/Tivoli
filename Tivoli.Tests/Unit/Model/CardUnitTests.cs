@@ -1,4 +1,4 @@
-﻿using Tivoli.Models.Entity;
+﻿using Tivoli.Dal.Entities;
 using Assert = Xunit.Assert;
 
 namespace Tivoli.AdminTests.Unit.Model;

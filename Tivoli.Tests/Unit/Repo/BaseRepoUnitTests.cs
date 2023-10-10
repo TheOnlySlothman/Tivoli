@@ -1,8 +1,8 @@
 ﻿using System.Linq.Expressions;
 using Microsoft.EntityFrameworkCore;
 using Tivoli.Dal;
+using Tivoli.Dal.Entities;
 using Tivoli.Dal.Repo;
-using Tivoli.Models;
 
 namespace Tivoli.AdminTests.Unit.Repo;
 

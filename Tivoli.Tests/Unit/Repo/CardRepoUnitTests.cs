@@ -1,6 +1,6 @@
 ﻿using System.Linq.Expressions;
+using Tivoli.Dal.Entities;
 using Tivoli.Dal.Repo;
-using Tivoli.Models.Entity;
 
 namespace Tivoli.AdminTests.Unit.Repo;
 

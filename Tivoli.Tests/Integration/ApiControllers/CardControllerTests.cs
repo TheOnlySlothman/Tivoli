@@ -2,9 +2,10 @@
 using System.Net.Http.Json;
 using System.Text;
 using System.Text.Json;
+using Tivoli.AdminApi;
+using Tivoli.BLL.DTO;
+using Tivoli.Dal.Entities;
 using Tivoli.Dal.Repo;
-using Tivoli.Models.DTO;
-using Tivoli.Models.Entity;
 using Xunit.Abstractions;
 
 namespace Tivoli.AdminTests.Integration.ApiControllers;

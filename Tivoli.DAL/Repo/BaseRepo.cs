@@ -1,6 +1,6 @@
 ﻿using System.Linq.Expressions;
 using Microsoft.EntityFrameworkCore;
-using Tivoli.Models;
+using Tivoli.Dal.Entities;
 
 namespace Tivoli.Dal.Repo;
 
@@ -19,7 +19,7 @@ public class BaseRepo<T> : IRepo<T> where T : class, IEntity, new()
         _dbSet = context.Set<T>();
     }
 
-    private readonly DbSet<T> _dbSet;
+    protected readonly DbSet<T> _dbSet;
 
     /// <inheritdoc />
     /// <exception cref="ArgumentException">Id is empty.</exception>
@@ -122,7 +122,7 @@ public class BaseRepo<T> : IRepo<T> where T : class, IEntity, new()
 
     /// <inheritdoc />
     /// <exception cref="ArgumentNullException">Entity is null.</exception>
-    /// <exception cref="ArgumentException">Entity with id already exists</exception>
+    /// <exception cref="ArgumentException">Entity with id already exists.</exception>
     public T Add(T entity)
     {
         if (entity is null) throw new ArgumentNullException(nameof(entity));

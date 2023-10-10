@@ -1,4 +1,4 @@
-﻿namespace Tivoli.Models;
+﻿namespace Tivoli.Dal.Entities;
 
 /// <summary>
 ///     Interface for all entities.

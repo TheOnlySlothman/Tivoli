@@ -1,7 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Tivoli.BLL.DTO;
+using Tivoli.Dal.Entities;
 using Tivoli.Dal.Repo;
-using Tivoli.Models.DTO;
-using Tivoli.Models.Entity;
+
 
 namespace Tivoli.AdminApi.Controllers;
 

@@ -1,7 +1,7 @@
 ﻿using Mapster;
 using Microsoft.AspNetCore.Mvc;
+using Tivoli.Dal.Entities;
 using Tivoli.Dal.Repo;
-using Tivoli.Models;
 
 namespace Tivoli.AdminApi.Controllers;
 

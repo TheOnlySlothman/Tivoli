@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using Tivoli.Models.Entity;
+using Tivoli.Dal.Entities;
 
 // ReSharper disable UnusedMember.Local
 

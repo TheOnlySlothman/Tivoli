@@ -21,7 +21,8 @@
 
     <ItemGroup>
       <ProjectReference Include="..\Tivoli.AdminApi\Tivoli.AdminApi.csproj" />
-      <ProjectReference Include="..\Tivoli.Dal\Tivoli.Dal.csproj" />
+      <ProjectReference Include="..\Tivoli.BLL\Tivoli.BLL.csproj" />
+      <ProjectReference Include="..\Tivoli.DAL\Tivoli.DAL.csproj" />
     </ItemGroup>
 
 </Project>

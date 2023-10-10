@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Tivoli.Models.Entity;
+using Tivoli.Dal.Entities;
 
 namespace Tivoli.Dal.Repo;
 
@@ -18,7 +18,7 @@ public class UnitOfWork : IUnitOfWork
     {
         _context = context;
         Customers = new BaseRepo<Customer>(context);
-        Cards = new BaseRepo<Card>(context);
+        Cards = new CardRepo(context);
     }
 
     /// <summary>
@@ -29,7 +29,7 @@ public class UnitOfWork : IUnitOfWork
     /// <summary>
     ///    Gets the repository for cards.
     /// </summary>
-    public BaseRepo<Card> Cards { get; }
+    public CardRepo Cards { get; }
 
     /// <inheritdoc />
     public void SaveChanges()

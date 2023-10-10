@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 
-namespace Tivoli.Models.Entity;
+namespace Tivoli.Dal.Entities;
 
 /// <summary>
 ///    Customer model.

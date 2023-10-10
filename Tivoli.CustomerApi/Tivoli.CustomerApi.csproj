@@ -16,8 +16,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\Tivoli.Dal\Tivoli.Dal.csproj" />
-      <ProjectReference Include="..\Tivoli.Models\Tivoli.Models.csproj" />
+      <ProjectReference Include="..\Tivoli.BLL\Tivoli.BLL.csproj" />
     </ItemGroup>
 
 </Project>

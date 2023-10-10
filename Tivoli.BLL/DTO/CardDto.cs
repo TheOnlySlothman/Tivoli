@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using Tivoli.Models.Entity;
+using Tivoli.Dal.Entities;
 
-namespace Tivoli.Models.DTO;
+namespace Tivoli.BLL.DTO;
 
 /// <summary>
 ///     Data transfer object for <see cref="Card"/> entity.

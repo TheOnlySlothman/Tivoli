@@ -1,5 +1,5 @@
 ﻿using System.Linq.Expressions;
-using Tivoli.Models;
+using Tivoli.Dal.Entities;
 
 // ReSharper disable UnusedMemberInSuper.Global
 

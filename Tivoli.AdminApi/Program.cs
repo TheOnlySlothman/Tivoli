@@ -10,6 +10,7 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddDbContext<DbContext, TivoliContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("sqlConnection")));
+
 builder.Services.AddTransient<UnitOfWork>();
 
 builder.Services.AddControllers();
@@ -34,10 +35,13 @@ app.MapControllers();
 
 app.Run();
 
-/// <summary>
-///    Redeclaration of Program class to change access modifier to public for use in tests.
-/// </summary>
-// ReSharper disable once UnusedType.Global
-public abstract partial class Program
+namespace Tivoli.AdminApi
 {
+    /// <summary>
+    ///    Redeclaration of Program class to change access modifier to public for use in tests.
+    /// </summary>
+// ReSharper disable once UnusedType.Global
+    public abstract partial class Program
+    {
+    }
 }

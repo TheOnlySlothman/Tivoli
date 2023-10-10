@@ -1,4 +1,4 @@
-﻿namespace Tivoli.Models.Entity;
+﻿namespace Tivoli.Dal.Entities;
 
 /// <summary>
 ///    Card entity.

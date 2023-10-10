@@ -1,5 +1,6 @@
-﻿using Tivoli.Dal.Repo;
-using Tivoli.Models;
+﻿using Tivoli.AdminApi;
+using Tivoli.Dal.Entities;
+using Tivoli.Dal.Repo;
 using Xunit.Abstractions;
 
 namespace Tivoli.AdminTests.Integration.ApiControllers;

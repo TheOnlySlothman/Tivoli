@@ -1,6 +1,12 @@
-﻿namespace Tivoli.CustomerApi.Controllers;
+﻿using Microsoft.AspNetCore.Mvc;
 
-public class CustomerController
+namespace Tivoli.CustomerApi.Controllers;
+
+public class CustomerController : ControllerBase
 {
-    
+    [HttpGet]
+    public async Task<IActionResult> GetCustomer()
+    {
+        return Ok();
+    }
 }

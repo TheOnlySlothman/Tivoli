@@ -1,6 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using Tivoli.Dal.Entities;
 
-namespace Tivoli.Models.DTO;
+namespace Tivoli.BLL.DTO;
 
 /// <summary>
 ///     Customer DTO.

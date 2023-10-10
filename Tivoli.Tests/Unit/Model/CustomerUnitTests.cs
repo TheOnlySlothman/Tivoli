@@ -1,4 +1,4 @@
-﻿using Tivoli.Models.Entity;
+﻿using Tivoli.Dal.Entities;
 
 namespace Tivoli.AdminTests.Unit.Model;
 

@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
-using Tivoli.Dal;
+using Tivoli.AdminApi;
 using Tivoli.Dal.Repo;
 using Xunit.Abstractions;
 
