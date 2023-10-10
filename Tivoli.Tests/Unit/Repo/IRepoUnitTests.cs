@@ -28,7 +28,7 @@ public interface IRepoUnitTests
     public void Add_EntityWithExistingId_ThrowsArgumentException();
     public void Update_ValidEntity_UpdatesEntity();
     public void Update_NullEntity_ThrowsArgumentNullException();
-    public void Update_EntityWithEmptyGuid_ThrowsArgumentException();
+    public void Update_EntityWithEmptyGuid_ThrowsKeyNotFoundException();
     public void Update_EntityWithNonExistingId_ThrowsKeyNotFoundException();
     public void Delete_ExistingEntity_DeletesEntity();
     public void Delete_NonExistingEntity_ThrowsKeyNotFoundException();

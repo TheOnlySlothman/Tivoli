@@ -56,7 +56,8 @@ public class AuthManager : IAuthManager
         IList<string> roles = await _userManager.GetRolesAsync(_user);
         List<Claim> claims = new()
         {
-            new Claim(ClaimTypes.Name, _user.UserName)
+            new Claim(ClaimTypes.Name, _user.UserName),
+            new Claim(ClaimTypes.NameIdentifier, _user.Id.ToString())
         };
         claims.AddRange(roles.Select(role => new Claim(ClaimTypes.Role, role)));
 

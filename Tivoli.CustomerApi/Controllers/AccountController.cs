@@ -42,15 +42,6 @@ public class AccountController : ControllerBase
             return BadRequest(ModelState.Values.SelectMany(v => v.Errors));
         }
 
-        // TODO
-        // result = await _userManager.AddClaimAsync(user, new Claim("CustomerId", user.Id.ToString()));
-        // if (!result.Succeeded)
-        // {
-        //     foreach (IdentityError error in result.Errors) ModelState.AddModelError(error.Code, error.Description);
-        //
-        //     return BadRequest(ModelState.Values.SelectMany(v => v.Errors));
-        // }
-
         result = await _userManager.AddToRoleAsync(user, "Customer");
         if (result.Succeeded) return Accepted();
         {

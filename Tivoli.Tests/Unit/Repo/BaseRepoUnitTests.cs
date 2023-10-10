@@ -28,20 +28,11 @@ public abstract class BaseRepoUnitTests<T> : IRepoUnitTests where T : class, IEn
 
     protected abstract Expression<Func<T, object?>>[] GetRelations();
 
-    [Fact]
-    public void Get_ExistingEntityById_ReturnsEntity()
+    protected void UseDatabase(Action callback)
     {
         try
         {
-            // Arrange
-            T model = CreateModel();
-            Repo.Add(model);
-            UnitOfWork.SaveChanges();
-            // Act
-            T result = Repo.Get(model.Id);
-
-            // Assert
-            Assert.Same(model, result);
+            callback();
         }
         finally
         {
@@ -51,9 +42,27 @@ public abstract class BaseRepoUnitTests<T> : IRepoUnitTests where T : class, IEn
     }
 
     [Fact]
+    public void Get_ExistingEntityById_ReturnsEntity()
+    {
+        UseDatabase(() =>
+            {
+                // Arrange
+                T model = CreateModel();
+                Repo.Add(model);
+                UnitOfWork.SaveChanges();
+                // Act
+                T result = Repo.Get(model.Id);
+
+                // Assert
+                Assert.Same(model, result);
+            }
+        );
+    }
+
+    [Fact]
     public void Get_NonExistingEntityById_ThrowsKeyNotFoundException()
     {
-        try
+        UseDatabase(() =>
         {
             // Arrange
             Guid id = Guid.NewGuid();
@@ -61,18 +70,13 @@ public abstract class BaseRepoUnitTests<T> : IRepoUnitTests where T : class, IEn
 
             // Act and Assert
             Assert.Throws<KeyNotFoundException>(() => act.Invoke(id));
-        }
-        finally
-        {
-            // Cleanup
-            _context.Database.EnsureDeleted();
-        }
+        });
     }
 
     [Fact]
     public void Get_EmptyGuid_ThrowsArgumentException()
     {
-        try
+        UseDatabase(() =>
         {
             // Arrange
             Guid id = Guid.Empty;
@@ -80,18 +84,13 @@ public abstract class BaseRepoUnitTests<T> : IRepoUnitTests where T : class, IEn
 
             // Act and Assert
             Assert.Throws<ArgumentException>(() => act.Invoke(id));
-        }
-        finally
-        {
-            // Cleanup
-            _context.Database.EnsureDeleted();
-        }
+        });
     }
 
     [Fact]
     public void Get_ExistingEntityByPredicate_ReturnsEntity()
     {
-        try
+        UseDatabase(() =>
         {
             // Arrange
             T model = CreateModel();
@@ -102,35 +101,25 @@ public abstract class BaseRepoUnitTests<T> : IRepoUnitTests where T : class, IEn
 
             // Assert
             Assert.Same(model, result);
-        }
-        finally
-        {
-            // Cleanup
-            _context.Database.EnsureDeleted();
-        }
+        });
     }
 
     [Fact]
     public void Get_NonExistingEntityByPredicate_ReturnsNull()
     {
-        try
+        UseDatabase(() =>
         {
             // Act
             T? result = Repo.Get(x => x.Id == Guid.NewGuid());
             // Assert
             Assert.Null(result);
-        }
-        finally
-        {
-            // Cleanup
-            _context.Database.EnsureDeleted();
-        }
+        });
     }
 
     [Fact]
     public void GetWithRelated_ExistingEntityById_ReturnsEntity()
     {
-        try
+        UseDatabase(() =>
         {
             // Arrange
             T model = CreateModel();
@@ -146,18 +135,13 @@ public abstract class BaseRepoUnitTests<T> : IRepoUnitTests where T : class, IEn
 
             foreach (Expression<Func<T, object?>> relation in relations)
                 Assert.NotNull(relation.Compile().Invoke(result));
-        }
-        finally
-        {
-            // Cleanup
-            _context.Database.EnsureDeleted();
-        }
+        });
     }
 
     [Fact]
     public void GetWithRelated_NonExistingEntityById_ThrowsKeyNotFoundException()
     {
-        try
+        UseDatabase(() =>
         {
             // Arrange
             Guid id = Guid.NewGuid();
@@ -165,18 +149,13 @@ public abstract class BaseRepoUnitTests<T> : IRepoUnitTests where T : class, IEn
 
             // Act and Assert
             Assert.Throws<KeyNotFoundException>(() => act.Invoke(id, GetRelations()));
-        }
-        finally
-        {
-            // Cleanup
-            _context.Database.EnsureDeleted();
-        }
+        });
     }
 
     [Fact]
     public void GetWithRelated_EmptyGuid_ThrowsArgumentException()
     {
-        try
+        UseDatabase(() =>
         {
             // Arrange
             Guid id = Guid.Empty;
@@ -184,18 +163,13 @@ public abstract class BaseRepoUnitTests<T> : IRepoUnitTests where T : class, IEn
 
             // Act and Assert
             Assert.Throws<ArgumentException>(() => act.Invoke(id, GetRelations()));
-        }
-        finally
-        {
-            // Cleanup
-            _context.Database.EnsureDeleted();
-        }
+        });
     }
 
     [Fact]
     public void GetWithRelated_ExistingEntityByPredicate_ReturnsEntity()
     {
-        try
+        UseDatabase(() =>
         {
             // Arrange
             T model = CreateModel();
@@ -212,18 +186,13 @@ public abstract class BaseRepoUnitTests<T> : IRepoUnitTests where T : class, IEn
 
             foreach (Expression<Func<T, object?>> relation in relations)
                 Assert.NotNull(relation.Compile().Invoke(result));
-        }
-        finally
-        {
-            // Cleanup
-            _context.Database.EnsureDeleted();
-        }
+        });
     }
 
     [Fact]
     public void GetWithRelated_NonExistingEntityByPredicate_ReturnsNull()
     {
-        try
+        UseDatabase(() =>
         {
             // Arrange
             Guid id = Guid.NewGuid();
@@ -233,18 +202,13 @@ public abstract class BaseRepoUnitTests<T> : IRepoUnitTests where T : class, IEn
 
             // Assert
             Assert.Null(result);
-        }
-        finally
-        {
-            // Cleanup
-            _context.Database.EnsureDeleted();
-        }
+        });
     }
 
     [Fact]
     public void GetAsNoTracking_ExistingEntity_ReturnsEntity()
     {
-        try
+        UseDatabase(() =>
         {
             // Arrange
             T model = CreateModel();
@@ -256,18 +220,13 @@ public abstract class BaseRepoUnitTests<T> : IRepoUnitTests where T : class, IEn
             // Assert
             Assert.Equal(model.Id, result.Id);
             Assert.NotSame(model, result);
-        }
-        finally
-        {
-            // Cleanup
-            _context.Database.EnsureDeleted();
-        }
+        });
     }
 
     [Fact]
     public void GetAsNoTracking_NonExistingEntity_ThrowsKeyNotFoundException()
     {
-        try
+        UseDatabase(() =>
         {
             // Arrange
             Guid id = Guid.NewGuid();
@@ -275,18 +234,13 @@ public abstract class BaseRepoUnitTests<T> : IRepoUnitTests where T : class, IEn
 
             // Act and Assert
             Assert.Throws<KeyNotFoundException>(() => act.Invoke(id));
-        }
-        finally
-        {
-            // Cleanup
-            _context.Database.EnsureDeleted();
-        }
+        });
     }
 
     [Fact]
     public void GetAsNoTracking_EmptyGuid_ThrowsArgumentException()
     {
-        try
+        UseDatabase(() =>
         {
             // Arrange
             Guid id = Guid.Empty;
@@ -294,18 +248,13 @@ public abstract class BaseRepoUnitTests<T> : IRepoUnitTests where T : class, IEn
 
             // Act and Assert
             Assert.Throws<ArgumentException>(() => act.Invoke(id));
-        }
-        finally
-        {
-            // Cleanup
-            _context.Database.EnsureDeleted();
-        }
+        });
     }
 
     [Fact]
     public void GetAll_ReturnsAllEntities()
     {
-        try
+        UseDatabase(() =>
         {
             // Arrange
             List<T> models = new byte[TestDataCount].Select(_ => CreateModel()).ToList();
@@ -318,18 +267,13 @@ public abstract class BaseRepoUnitTests<T> : IRepoUnitTests where T : class, IEn
             Assert.Equal(models.Count, result.Count());
             foreach (T model in models)
                 Assert.Contains(model, result);
-        }
-        finally
-        {
-            // Cleanup
-            _context.Database.EnsureDeleted();
-        }
+        });
     }
 
     [Fact]
     public void GetAllAsNoTracking_ReturnsAllEntities()
     {
-        try
+        UseDatabase(() =>
         {
             // Arrange
             List<T> models = new byte[TestDataCount].Select(_ => CreateModel()).ToList();
@@ -341,18 +285,13 @@ public abstract class BaseRepoUnitTests<T> : IRepoUnitTests where T : class, IEn
             // Assert
             Assert.Equal(models.Count, result.Count());
             Assert.Contains(result, entity => models.Any(model => model.Id == entity.Id));
-        }
-        finally
-        {
-            // Cleanup
-            _context.Database.EnsureDeleted();
-        }
+        });
     }
 
     [Fact]
     public void Exists_ExistingEntity_ReturnsTrue()
     {
-        try
+        UseDatabase(() =>
         {
             // Arrange
             T model = CreateModel();
@@ -363,18 +302,13 @@ public abstract class BaseRepoUnitTests<T> : IRepoUnitTests where T : class, IEn
 
             // Assert
             Assert.True(result);
-        }
-        finally
-        {
-            // Cleanup
-            _context.Database.EnsureDeleted();
-        }
+        });
     }
 
     [Fact]
     public void Exists_NonExistingEntity_ReturnsFalse()
     {
-        try
+        UseDatabase(() =>
         {
             // Arrange
             Guid id = Guid.NewGuid();
@@ -383,18 +317,13 @@ public abstract class BaseRepoUnitTests<T> : IRepoUnitTests where T : class, IEn
 
             // Assert
             Assert.False(result);
-        }
-        finally
-        {
-            // Cleanup
-            _context.Database.EnsureDeleted();
-        }
+        });
     }
 
     [Fact]
     public void Exists_EmptyGuid_ThrowsArgumentException()
     {
-        try
+        UseDatabase(() =>
         {
             // Arrange
             Guid id = Guid.Empty;
@@ -402,18 +331,13 @@ public abstract class BaseRepoUnitTests<T> : IRepoUnitTests where T : class, IEn
 
             // Act and Assert
             Assert.Throws<ArgumentException>(() => act.Invoke(id));
-        }
-        finally
-        {
-            // Cleanup
-            _context.Database.EnsureDeleted();
-        }
+        });
     }
 
     [Fact]
     public void Add_ValidEntity_AddsEntity()
     {
-        try
+        UseDatabase(() =>
         {
             // Arrange
             T model = CreateModel();
@@ -423,18 +347,13 @@ public abstract class BaseRepoUnitTests<T> : IRepoUnitTests where T : class, IEn
 
             // Assert
             Assert.Same(model, result);
-        }
-        finally
-        {
-            // Cleanup
-            _context.Database.EnsureDeleted();
-        }
+        });
     }
 
     [Fact]
     public void Add_NullEntity_ThrowsArgumentNullException()
     {
-        try
+        UseDatabase(() =>
         {
             // Arrange
             T model = null!;
@@ -442,18 +361,13 @@ public abstract class BaseRepoUnitTests<T> : IRepoUnitTests where T : class, IEn
 
             // Act and Assert
             Assert.Throws<ArgumentNullException>(() => act.Invoke(model));
-        }
-        finally
-        {
-            // Cleanup
-            _context.Database.EnsureDeleted();
-        }
+        });
     }
 
     [Fact]
     public void Add_EntityWithExistingId_ThrowsArgumentException()
     {
-        try
+        UseDatabase(() =>
         {
             // Arrange
             T model = CreateModel();
@@ -463,18 +377,14 @@ public abstract class BaseRepoUnitTests<T> : IRepoUnitTests where T : class, IEn
 
             // Act and Assert
             Assert.Throws<ArgumentException>(() => act.Invoke(model));
-        }
-        finally
-        {
-            // Cleanup
-            _context.Database.EnsureDeleted();
-        }
+        });
     }
+
 
     [Fact]
     public void Update_ValidEntity_UpdatesEntity()
     {
-        try
+        UseDatabase(() =>
         {
             // Arrange
             T model = CreateModel();
@@ -487,19 +397,14 @@ public abstract class BaseRepoUnitTests<T> : IRepoUnitTests where T : class, IEn
 
             // Assert
             Assert.Same(model, result);
-        }
-        finally
-        {
-            // Cleanup
-            _context.Database.EnsureDeleted();
-        }
+        });
     }
 
 
     [Fact]
     public void Update_NullEntity_ThrowsArgumentNullException()
     {
-        try
+        UseDatabase(() =>
         {
             // Arrange
             T model = null!;
@@ -507,17 +412,13 @@ public abstract class BaseRepoUnitTests<T> : IRepoUnitTests where T : class, IEn
 
             // Act and Assert
             Assert.Throws<ArgumentNullException>(() => act.Invoke(model));
-        }
-        finally
-        {
-            // Cleanup
-            _context.Database.EnsureDeleted();
-        }
+        });
     }
 
-    public void Update_EntityWithEmptyGuid_ThrowsArgumentException()
+    [Fact]
+    public void Update_EntityWithEmptyGuid_ThrowsKeyNotFoundException()
     {
-        try
+        UseDatabase(() =>
         {
             // Arrange
             T model = CreateModel();
@@ -525,19 +426,14 @@ public abstract class BaseRepoUnitTests<T> : IRepoUnitTests where T : class, IEn
             Func<T, T> act = Repo.Update;
 
             // Act and Assert
-            Assert.Throws<ArgumentException>(() => act.Invoke(model));
-        }
-        finally
-        {
-            // Cleanup
-            _context.Database.EnsureDeleted();
-        }
+            Assert.Throws<KeyNotFoundException>(() => act.Invoke(model));
+        });
     }
 
     [Fact]
     public void Update_EntityWithNonExistingId_ThrowsKeyNotFoundException()
     {
-        try
+        UseDatabase(() =>
         {
             // Arrange
             T model = CreateModel();
@@ -546,18 +442,13 @@ public abstract class BaseRepoUnitTests<T> : IRepoUnitTests where T : class, IEn
 
             // Act and Assert
             Assert.Throws<KeyNotFoundException>(() => act.Invoke(model));
-        }
-        finally
-        {
-            // Cleanup
-            _context.Database.EnsureDeleted();
-        }
+        });
     }
 
     [Fact]
     public void Delete_ExistingEntity_DeletesEntity()
     {
-        try
+        UseDatabase(() =>
         {
             // Arrange
             T model = CreateModel();
@@ -569,18 +460,13 @@ public abstract class BaseRepoUnitTests<T> : IRepoUnitTests where T : class, IEn
 
             // Assert
             Assert.False(Repo.Exists(model.Id));
-        }
-        finally
-        {
-            // Cleanup
-            _context.Database.EnsureDeleted();
-        }
+        });
     }
 
     [Fact]
     public void Delete_NonExistingEntity_ThrowsKeyNotFoundException()
     {
-        try
+        UseDatabase(() =>
         {
             // Arrange
             Guid id = Guid.NewGuid();
@@ -588,18 +474,13 @@ public abstract class BaseRepoUnitTests<T> : IRepoUnitTests where T : class, IEn
 
             // Act and Assert
             Assert.Throws<KeyNotFoundException>(() => act.Invoke(id));
-        }
-        finally
-        {
-            // Cleanup
-            _context.Database.EnsureDeleted();
-        }
+        });
     }
 
     [Fact]
     public void Delete_EmptyGuid_ThrowsArgumentException()
     {
-        try
+        UseDatabase(() =>
         {
             // Arrange
             Guid id = Guid.Empty;
@@ -607,11 +488,6 @@ public abstract class BaseRepoUnitTests<T> : IRepoUnitTests where T : class, IEn
 
             // Act and Assert
             Assert.Throws<ArgumentException>(() => act.Invoke(id));
-        }
-        finally
-        {
-            // Cleanup
-            _context.Database.EnsureDeleted();
-        }
+        });
     }
 }

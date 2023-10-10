@@ -1,9 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 using Tivoli.BLL;
-using Tivoli.BLL.Services;
 using Tivoli.Dal;
-using Tivoli.Dal.Repo;
 
 // ReSharper disable SuggestVarOrType_SimpleTypes
 
@@ -18,8 +16,7 @@ services.AddAuthentication();
 services.ConfigureIdentity();
 services.ConfigureJWT(builder.Configuration);
 
-services.AddTransient<UnitOfWork>();
-services.AddScoped<AuthManager>();
+services.ConfigureDependencies();
 
 services.AddSwaggerGen(o =>
 {
@@ -50,7 +47,6 @@ services.AddSwaggerGen(o =>
         }
     });
 });
-
 
 
 builder.Services.AddControllers();

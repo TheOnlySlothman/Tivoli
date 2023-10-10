@@ -2,8 +2,8 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Tivoli.BLL.DTO;
+using Tivoli.BLL.Services;
 using Tivoli.Dal.Entities;
-using Tivoli.Dal.Repo;
 
 namespace Tivoli.CustomerApi.Controllers;
 
@@ -12,42 +12,32 @@ namespace Tivoli.CustomerApi.Controllers;
 [Authorize]
 public class CardController : ControllerBase
 {
-    private UnitOfWork _unitOfWork;
-    private CardRepo _repo;
-
     private UserManager<Customer> _userManager;
+    private readonly CardManager _cardManager;
 
-    public CardController(UnitOfWork unitOfWork, UserManager<Customer> userManager)
+    public CardController(UserManager<Customer> userManager, CardManager cardManager)
     {
-        _unitOfWork = unitOfWork;
         _userManager = userManager;
-        _repo = unitOfWork.Cards;
+        _cardManager = cardManager;
     }
 
-    [HttpPost]
-    public async Task<IActionResult> CreateCard([FromBody] CardDto request)
+    // [HttpGet("CreateCard")]
+    // public IActionResult CreateCard()
+    // {
+    //     Customer? user = _userManager.GetUserAsync(User).Result;
+    //     if (user is null) return Forbid();
+    //     _cardManager.CreateCard(user);
+    //     return Ok();
+    // }
+
+    [HttpGet("Cards")]
+    public IActionResult GetCards()
     {
-        return Ok();
-    }
+        string? userId = _userManager.GetUserId(User);
 
-    [HttpGet]
-    public async Task<IActionResult> GetCards()
-    {
-        List<Customer> users = _unitOfWork.Customers.GetAll().ToList();
-        string? t = _userManager.GetUserId(User);
-        Customer? user = _userManager.GetUserAsync(User).Result;
+        if (userId is null) return Forbid();
 
-        if (t is null && user is null)
-        {
-            // _userManager.AddClaimAsync(user, new Claim("CustomerId", ));
-        }
-
-
-        return null;
-        // if (t is null) return Forbid();
-        //
-        // Guid customerId = Guid.Parse(t);
-        // IEnumerable<Card> cards = _repo.GetCardsByCustomerId(customerId);
-        // return Ok(cards);
+        IEnumerable<CardDto> cards = _cardManager.GetUserCards(Guid.Parse(userId));
+        return Ok(cards);
     }
 }

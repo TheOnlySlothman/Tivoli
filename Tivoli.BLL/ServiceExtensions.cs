@@ -1,11 +1,14 @@
 ﻿using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
+using Tivoli.BLL.Services;
 using Tivoli.Dal;
 using Tivoli.Dal.Entities;
+using Tivoli.Dal.Repo;
 
 namespace Tivoli.BLL;
 
@@ -55,5 +58,12 @@ public static class ServiceExtensions
                 ValidateAudience = false
             };
         });
+    }
+
+    public static void ConfigureDependencies(this IServiceCollection services)
+    {
+        services.AddTransient<UnitOfWork>();
+        services.AddScoped<CardManager>();
+        services.AddScoped<AuthManager>();
     }
 }
