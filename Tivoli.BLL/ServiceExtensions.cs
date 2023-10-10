@@ -1,14 +1,13 @@
-﻿using System.Collections;
-using System.Diagnostics;
-using System.Text;
+﻿using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.Identity.Web;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using Tivoli.Dal;
-using Tivoli.Models.Entity;
+using Tivoli.Dal.Entities;
 
-namespace Tivoli.CustomerApi;
+namespace Tivoli.BLL;
 
 /// <summary>
 ///   This is a static class for configuring services.

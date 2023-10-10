@@ -1,6 +1,6 @@
-﻿using Tivoli.CustomerApi.Models;
+﻿using Tivoli.BLL.Models;
 
-namespace Tivoli.CustomerApi.Services;
+namespace Tivoli.BLL.Services;
 
 public interface IAuthManager
 {

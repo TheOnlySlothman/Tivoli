@@ -2,11 +2,12 @@
 using System.Security.Claims;
 using System.Text;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
-using Tivoli.CustomerApi.Models;
-using Tivoli.Models.Entity;
+using Tivoli.BLL.Models;
+using Tivoli.Dal.Entities;
 
-namespace Tivoli.CustomerApi.Services;
+namespace Tivoli.BLL.Services;
 
 /// <summary>
 ///     This is a class for managing authentication.

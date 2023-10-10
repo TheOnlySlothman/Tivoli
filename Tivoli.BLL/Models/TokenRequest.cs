@@ -1,4 +1,4 @@
-﻿namespace Tivoli.CustomerApi.Models;
+﻿namespace Tivoli.BLL.Models;
 
 public class TokenRequest
 {

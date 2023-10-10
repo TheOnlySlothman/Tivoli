@@ -1,4 +1,4 @@
-﻿namespace Tivoli.CustomerApi.Models;
+﻿namespace Tivoli.BLL.Models;
 
 /// <summary>
 ///    This is a DTO (Data Transfer Object) for the Login method in the AccountController.
