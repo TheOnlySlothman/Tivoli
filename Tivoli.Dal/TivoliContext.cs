@@ -1,4 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using Tivoli.Models.Entity;
 
 // ReSharper disable UnusedMember.Local
@@ -8,7 +10,7 @@ namespace Tivoli.Dal;
 /// <summary>
 ///   Context for database.
 /// </summary>
-public class TivoliContext : DbContext
+public class TivoliContext : IdentityDbContext<Customer, IdentityRole<Guid>, Guid>
 {
     /// <summary>
     ///     Constructor.
@@ -18,13 +20,8 @@ public class TivoliContext : DbContext
     {
     }
 
-    private DbSet<Customer> Customers { get; set; } = null!;
+    // private DbSet<Customer> Customers { get; set; } = null!;
     private DbSet<Card> Cards { get; set; } = null!;
-
-    // protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-    // {
-    //     // optionsBuilder.UseSqlServer("Server=localhost;Database=Tivoli;Trusted_Connection=True;");
-    // }
 
     /// <summary>
     ///    This method is called when the model for a derived context has been initialized.
@@ -33,5 +30,13 @@ public class TivoliContext : DbContext
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
+        modelBuilder.Entity<IdentityRole<Guid>>().HasData(
+            new IdentityRole<Guid>
+            {
+                Id = Guid.NewGuid(),
+                Name = "Customer",
+                NormalizedName = "CUSTOMER"
+            }
+        );
     }
 }

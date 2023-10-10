@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using Tivoli.CustomerApi.Models;
+using Tivoli.CustomerApi.Services;
 using Tivoli.Models.Entity;
 
 namespace Tivoli.CustomerApi.Controllers;
@@ -16,26 +16,21 @@ namespace Tivoli.CustomerApi.Controllers;
 public class AccountController : ControllerBase
 {
     private readonly UserManager<Customer> _userManager;
-    private readonly SignInManager<Customer> _signInManager;
+    private readonly AuthManager _authManager;
 
     /// <summary>
-    ///    Constructor for the AccountController class.
+    ///     Constructor for the AccountController.
     /// </summary>
-    /// <param name="userManager">Service for managing users.</param>
-    public AccountController(UserManager<Customer> userManager, SignInManager<Customer> signInManager)
+    /// <param name="userManager"></param>
+    /// <param name="authManager"></param>
+    public AccountController(UserManager<Customer> userManager, AuthManager authManager)
     {
         _userManager = userManager;
-        _signInManager = signInManager;
+        _authManager = authManager;
     }
 
-    /// <summary>
-    ///     Register a new user.
-    /// </summary>
-    /// <param name="model">Dto to convert to <c>Customer</c>.</param>
-    /// <returns>Ok if successful; otherwise if model is invalid; BadRequest.</returns>
-    /// <exception cref="DbUpdateException">Creation of user in db was unsuccessful.</exception>
     [HttpPost("Register")]
-    public async Task<IActionResult> Register([FromBody] LoginDto model)
+    public async Task<IActionResult> Register([FromBody] RegisterDto model)
     {
         if (!ModelState.IsValid) return BadRequest(ModelState.Values.SelectMany(v => v.Errors));
 
@@ -46,19 +41,38 @@ public class AccountController : ControllerBase
         };
         IdentityResult result = await _userManager.CreateAsync(user, model.Password);
 
-        if (!result.Succeeded) throw new DbUpdateException(result.Errors.First().Description);
+        if (!result.Succeeded)
+        {
+            foreach (IdentityError error in result.Errors) ModelState.AddModelError(error.Code, error.Description);
 
-        // await _signInManager.SignInAsync(user, false);
-        return Ok(model.Username);
+            return BadRequest(ModelState.Values.SelectMany(v => v.Errors));
+        }
+
+        await _userManager.AddToRoleAsync(user, model.Role);
+        return Accepted();
     }
 
     [HttpPost("Login")]
     public async Task<IActionResult> Login([FromBody] LoginDto model)
     {
-        Microsoft.AspNetCore.Identity.SignInResult result = await _signInManager.PasswordSignInAsync(model.Username, model.Password, false, false);
+        if (!ModelState.IsValid) return BadRequest(ModelState);
+        try
+        {
+            if (!await _authManager.ValidateUser(model))
+            {
+                return Unauthorized();
+            }
 
-        if (!result.Succeeded) return BadRequest(result);
+            return Accepted(new TokenRequest
+                { Token = await _authManager.CreateToken()});
 
-        return Ok(result);
+            // return Accepted(new TokenRequest
+            // { Token = await _authManager.CreateToken(), RefreshToken = await _authManager.CreateRefreshToken() });
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            throw;
+        }
     }
 }
