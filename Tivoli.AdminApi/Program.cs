@@ -35,13 +35,10 @@ app.MapControllers();
 
 app.Run();
 
-namespace Tivoli.AdminApi
-{
-    /// <summary>
-    ///    Redeclaration of Program class to change access modifier to public for use in tests.
-    /// </summary>
+/// <summary>
+///    Redeclaration of Program class to change access modifier to public for use in tests.
+/// </summary>
 // ReSharper disable once UnusedType.Global
-    public abstract partial class Program
-    {
-    }
+public partial class Program
+{
 }

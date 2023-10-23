@@ -1,8 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Tivoli.Dal;
 using Tivoli.Dal.Repo;
 
-namespace Tivoli.AdminTests.Unit;
+namespace Tivoli.Dal.Tests.Model;
 
 public class UnitOfWorkUnitTest
 {

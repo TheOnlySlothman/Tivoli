@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Tivoli.Dal;
 
-namespace Tivoli.AdminTests.Integration;
+namespace Tivoli.AdminApi.Tests;
 
 // ReSharper disable once ClassNeverInstantiated.Global
 public class CustomWebApplicationFactory<TProgram> : WebApplicationFactory<TProgram> where TProgram : class

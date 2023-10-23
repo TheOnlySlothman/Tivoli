@@ -1,7 +1,7 @@
 ﻿
 // ReSharper disable UnusedMemberInSuper.Global
 
-namespace Tivoli.AdminTests.Unit.Repo;
+namespace Tivoli.Dal.Tests.Repo;
 
 public interface IRepoUnitTests
 {

@@ -2,64 +2,56 @@
 using System.Net.Http.Json;
 using System.Text;
 using System.Text.Json;
-using Tivoli.AdminApi;
 using Tivoli.BLL.DTO;
 using Tivoli.Dal.Entities;
 using Tivoli.Dal.Repo;
 using Xunit.Abstractions;
 
-namespace Tivoli.AdminTests.Integration.ApiControllers;
+namespace Tivoli.AdminApi.Tests;
 
-public class CardControllerTests : BaseCrudControllerTests<Card, CardDto>
+public class CustomerControllerTests : BaseCrudControllerTests<Customer, CustomerDto>
 {
-    public CardControllerTests(CustomWebApplicationFactory<Program> factory,
-        ITestOutputHelper testOutputHelper) : base(
-        factory, testOutputHelper)
+    public CustomerControllerTests(CustomWebApplicationFactory<Program> factory, ITestOutputHelper testOutputHelper) :
+        base(factory, testOutputHelper)
     {
     }
 
+    protected override string ControllerName => "Customer";
+    protected override BaseRepo<Customer> Repo => UnitOfWork.Customers;
 
-    protected override Card ConstructModel()
+    protected override Customer ConstructModel()
     {
-        byte[] cardBytes = new byte[16 * 4 * 16];
-        new Random().NextBytes(cardBytes);
-        string cardData = Convert.ToBase64String(cardBytes);
-        return new Card(cardData);
+        return new Customer();
     }
 
-    protected override CardDto ConstructDto()
+    protected override CustomerDto ConstructDto()
     {
-        byte[] cardBytes = new byte[16 * 4 * 16];
-        new Random().NextBytes(cardBytes);
-        string cardData = Convert.ToBase64String(cardBytes);
-        return new CardDto(cardData);
+        return new CustomerDto("TestUser", "TestEmail@Test.dk", "88888888");
     }
-
-    protected override string ControllerName => "Card";
-    protected override BaseRepo<Card> Repo => UnitOfWork.Cards;
 
     [Fact]
-    public async void Post_Card_ReturnsOkWithCard()
+    public async void Post_Customer_ReturnsOkWithCustomer()
     {
         try
         {
             // Arrange
-            CardDto card = ConstructDto();
+            CustomerDto customerDto = ConstructDto();
 
             const string method = "create";
             // Act
             HttpResponseMessage response = await Client.PostAsync(CombineUrl(ControllerName, method),
-                new StringContent(JsonSerializer.Serialize(card), Encoding.UTF8, "application/json"));
+                new StringContent(JsonSerializer.Serialize(customerDto), Encoding.UTF8, "application/json"));
 
             if (response.StatusCode == HttpStatusCode.InternalServerError)
                 TestOutputHelper.WriteLine(await response.Content.ReadAsStringAsync());
 
-            CardDto? responseValue = await response.Content.ReadFromJsonAsync<CardDto>();
+            CustomerDto? responseValue = await response.Content.ReadFromJsonAsync<CustomerDto>();
 
             // Assert
             response.EnsureSuccessStatusCode();
-            Assert.Equal(card.CardData, responseValue?.CardData);
-            Assert.Equal(card.CustomerId, responseValue?.CustomerId);
+            Assert.Equal(customerDto.UserName, responseValue?.UserName);
+            Assert.Equal(customerDto.Email, responseValue?.Email);
+            Assert.Equal(customerDto.PhoneNumber, responseValue?.PhoneNumber);
         }
         finally
         {
@@ -70,27 +62,28 @@ public class CardControllerTests : BaseCrudControllerTests<Card, CardDto>
     }
 
     [Fact]
-    public async void Post_Card_ReturnsBadRequest()
+    public async void Post_Customer_ReturnsBadRequest()
     {
         try
         {
             // Arrange
-            CardDto card = new();
+            CustomerDto customerDto = new();
 
             const string method = "create";
             // Act
             HttpResponseMessage response = await Client.PostAsync(CombineUrl(ControllerName, method),
-                new StringContent(JsonSerializer.Serialize(card), Encoding.UTF8, "application/json"));
+                new StringContent(JsonSerializer.Serialize(customerDto), Encoding.UTF8, "application/json"));
 
             if (response.StatusCode == HttpStatusCode.InternalServerError)
                 TestOutputHelper.WriteLine(await response.Content.ReadAsStringAsync());
 
-            CardDto? responseValue = await response.Content.ReadFromJsonAsync<CardDto>();
+            CustomerDto? responseValue = await response.Content.ReadFromJsonAsync<CustomerDto>();
 
             // Assert
             Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
-            Assert.Equal(card.CardData, responseValue?.CardData);
-            Assert.Equal(card.CustomerId, responseValue?.CustomerId);
+            Assert.Equal(customerDto.UserName, responseValue?.UserName);
+            Assert.Equal(customerDto.Email, responseValue?.Email);
+            Assert.Equal(customerDto.PhoneNumber, responseValue?.PhoneNumber);
         }
         finally
         {
@@ -101,28 +94,30 @@ public class CardControllerTests : BaseCrudControllerTests<Card, CardDto>
     }
 
     [Fact]
-    public async void Get_Card_ReturnsOkWithCard()
+    public async void Get_Customer_ReturnsOkWithCustomer()
     {
         try
         {
             // Arrange
-            Card card = ConstructModel();
-            Repo.Add(card);
+            Customer customer = ConstructModel();
+
+            Repo.Add(customer);
             UnitOfWork.SaveChanges();
 
-            string method = card.Id.ToString();
+            string method = customer.Id.ToString();
             // Act
             HttpResponseMessage response = await Client.GetAsync(CombineUrl(ControllerName, method));
 
             if (response.StatusCode == HttpStatusCode.InternalServerError)
                 TestOutputHelper.WriteLine(await response.Content.ReadAsStringAsync());
 
-            CardDto? responseValue = await response.Content.ReadFromJsonAsync<CardDto>();
+            CustomerDto? responseValue = await response.Content.ReadFromJsonAsync<CustomerDto>();
 
             // Assert
             response.EnsureSuccessStatusCode();
-            Assert.Equal(card.CardData, responseValue?.CardData);
-            Assert.Equal(card.CustomerId, responseValue?.CustomerId);
+            Assert.Equal(customer.UserName, responseValue?.UserName);
+            Assert.Equal(customer.Email, responseValue?.Email);
+            Assert.Equal(customer.PhoneNumber, responseValue?.PhoneNumber);
         }
         finally
         {
@@ -133,7 +128,7 @@ public class CardControllerTests : BaseCrudControllerTests<Card, CardDto>
     }
 
     [Fact]
-    public async void Get_Card_ReturnsNotFoundWithId()
+    public async void Get_Customer_ReturnsNotFoundWithId()
     {
         // Arrange
         Guid id = Guid.NewGuid();
@@ -153,13 +148,13 @@ public class CardControllerTests : BaseCrudControllerTests<Card, CardDto>
     }
 
     [Fact]
-    public async void Get_AllCards_ReturnsOkWithCards()
+    public async void Get_AllCustomers_ReturnsOkWithCustomers()
     {
         try
         {
             // Arrange
-            List<Card> cards = new byte[10].Select(_ => ConstructModel()).ToList();
-            foreach (Card card in cards) Repo.Add(card);
+            List<Customer> customers = new byte[10].Select(_ => ConstructModel()).ToList();
+            foreach (Customer customer in customers) Repo.Add(customer);
             UnitOfWork.SaveChanges();
 
             const string method = "";
@@ -170,16 +165,18 @@ public class CardControllerTests : BaseCrudControllerTests<Card, CardDto>
             if (response.StatusCode == HttpStatusCode.InternalServerError)
                 TestOutputHelper.WriteLine(await response.Content.ReadAsStringAsync());
 
-            List<CardDto>? responseValue = await response.Content
-                .ReadFromJsonAsync<IEnumerable<CardDto>>() as List<CardDto>;
+            List<CustomerDto>? responseValue = await response.Content
+                .ReadFromJsonAsync<IEnumerable<CustomerDto>>() as List<CustomerDto>;
 
 
             // Assert
             response.EnsureSuccessStatusCode();
             Assert.NotNull(responseValue);
-            Assert.Equal(cards.Count, responseValue.Count);
+            Assert.Equal(customers.Count, responseValue.Count);
             Assert.All(responseValue, dto =>
-                Assert.Contains(cards, card => card.CardData == dto.CardData && card.CustomerId == dto.CustomerId));
+                Assert.Contains(customers, customer => customer.UserName == dto.UserName
+                                                       && customer.Email == dto.Email
+                                                       && customer.PhoneNumber == dto.PhoneNumber));
         }
         finally
         {
@@ -190,33 +187,35 @@ public class CardControllerTests : BaseCrudControllerTests<Card, CardDto>
     }
 
     [Fact]
-    public async void Put_Card_ReturnsOkWithCard()
+    public async void Put_Customer_ReturnsOkWithCustomer()
     {
         try
         {
             // Arrange
-            Card card = ConstructModel();
-            Repo.Add(card);
+            Customer customer = ConstructModel();
+            Repo.Add(customer);
             UnitOfWork.SaveChanges();
 
-            CardDto cardDto = ConstructDto();
-            cardDto.Id = card.Id;
+            CustomerDto customerDto = ConstructDto();
+            customerDto.Id = customer.Id;
 
-            string method = card.Id.ToString();
+            string method = customer.Id.ToString();
             // Act
             HttpResponseMessage response = await Client.PutAsync(CombineUrl(ControllerName, method),
-                new StringContent(JsonSerializer.Serialize(cardDto), Encoding.UTF8, "application/json"));
+                new StringContent(JsonSerializer.Serialize(customerDto), Encoding.UTF8, "application/json"));
 
             if (response.StatusCode == HttpStatusCode.InternalServerError)
                 TestOutputHelper.WriteLine(await response.Content.ReadAsStringAsync());
 
-            CardDto? responseValue = await response.Content.ReadFromJsonAsync<CardDto>();
+            CustomerDto? responseValue = await response.Content.ReadFromJsonAsync<CustomerDto>();
 
             // Assert
             response.EnsureSuccessStatusCode();
-            Assert.Equal(cardDto.CardData, responseValue?.CardData);
-            Assert.Equal(cardDto.CustomerId, responseValue?.CustomerId);
+            Assert.Equal(customer.UserName, responseValue?.UserName);
+            Assert.Equal(customer.Email, responseValue?.Email);
+            Assert.Equal(customer.PhoneNumber, responseValue?.PhoneNumber);
         }
+
         finally
         {
             // Cleanup
@@ -226,16 +225,16 @@ public class CardControllerTests : BaseCrudControllerTests<Card, CardDto>
     }
 
     [Fact]
-    public async void Delete_Card_ReturnsOk()
+    public async void Delete_Customer_ReturnsOk()
     {
         try
         {
             // Arrange
-            Card card = ConstructModel();
-            Repo.Add(card);
+            Customer customer = ConstructModel();
+            Repo.Add(customer);
             UnitOfWork.SaveChanges();
 
-            string method = card.Id.ToString();
+            string method = customer.Id.ToString();
             // Act
             HttpResponseMessage response = await Client.DeleteAsync(CombineUrl(ControllerName, method));
 

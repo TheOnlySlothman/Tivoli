@@ -7,7 +7,6 @@
 
         <IsPackable>false</IsPackable>
         <IsTestProject>true</IsTestProject>
-        <RootNamespace>Tivoli.AdminTests</RootNamespace>
     </PropertyGroup>
 
     <ItemGroup>
@@ -20,8 +19,6 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\Tivoli.AdminApi\Tivoli.AdminApi.csproj" />
-      <ProjectReference Include="..\Tivoli.BLL\Tivoli.BLL.csproj" />
       <ProjectReference Include="..\Tivoli.DAL\Tivoli.DAL.csproj" />
     </ItemGroup>
 

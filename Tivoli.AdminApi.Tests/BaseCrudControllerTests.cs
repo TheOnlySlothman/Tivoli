@@ -1,12 +1,12 @@
-﻿using Tivoli.AdminApi;
-using Tivoli.Dal.Entities;
+﻿using Tivoli.Dal.Entities;
 using Tivoli.Dal.Repo;
 using Xunit.Abstractions;
 
-namespace Tivoli.AdminTests.Integration.ApiControllers;
+namespace Tivoli.AdminApi.Tests;
 
 public abstract class BaseCrudControllerTests<T, TDto> : BaseControllerTests where T : class, IEntity, new()
 {
+    protected abstract string ControllerName { get; }
     protected abstract BaseRepo<T> Repo { get; }
 
     protected BaseCrudControllerTests(CustomWebApplicationFactory<Program> factory, ITestOutputHelper testOutputHelper) : base(factory, testOutputHelper)

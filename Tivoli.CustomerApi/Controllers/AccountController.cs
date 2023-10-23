@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Tivoli.BLL.Models;
 using Tivoli.BLL.Services;
+using Tivoli.Dal;
 using Tivoli.Dal.Entities;
 
 namespace Tivoli.CustomerApi.Controllers;
@@ -17,11 +18,13 @@ public class AccountController : ControllerBase
 {
     private readonly UserManager<Customer> _userManager;
     private readonly AuthManager _authManager;
+    private readonly TivoliContext _context;
 
-    public AccountController(UserManager<Customer> userManager, AuthManager authManager)
+    public AccountController(UserManager<Customer> userManager, AuthManager authManager, TivoliContext context)
     {
         _userManager = userManager;
         _authManager = authManager;
+        _context = context;
     }
 
     [HttpPost("Register")]
@@ -44,11 +47,10 @@ public class AccountController : ControllerBase
 
         result = await _userManager.AddToRoleAsync(user, "Customer");
         if (result.Succeeded) return Accepted();
-        {
-            foreach (IdentityError error in result.Errors) ModelState.AddModelError(error.Code, error.Description);
 
-            return BadRequest(ModelState.Values.SelectMany(v => v.Errors));
-        }
+        foreach (IdentityError error in result.Errors) ModelState.AddModelError(error.Code, error.Description);
+
+        return BadRequest(ModelState.Values.SelectMany(v => v.Errors));
     }
 
     [HttpPost("Login")]

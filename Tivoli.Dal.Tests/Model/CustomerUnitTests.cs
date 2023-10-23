@@ -1,6 +1,6 @@
 ﻿using Tivoli.Dal.Entities;
 
-namespace Tivoli.AdminTests.Unit.Model;
+namespace Tivoli.Dal.Tests.Model;
 
 public class CustomerUnitTests
 {

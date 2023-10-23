@@ -2,7 +2,7 @@
 using Tivoli.Dal.Entities;
 using Tivoli.Dal.Repo;
 
-namespace Tivoli.AdminTests.Unit.Repo;
+namespace Tivoli.Dal.Tests.Repo;
 
 // ReSharper disable once UnusedType.Global
 public class CustomerRepoUnitTests : BaseRepoUnitTests<Customer>

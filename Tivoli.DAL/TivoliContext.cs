@@ -30,10 +30,11 @@ public class TivoliContext : IdentityDbContext<Customer, IdentityRole<Guid>, Gui
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
+
         modelBuilder.Entity<IdentityRole<Guid>>().HasData(
             new IdentityRole<Guid>
             {
-                Id = Guid.NewGuid(),
+                Id = Guid.Parse("28f16864-f3ed-4c23-a0c2-ff952d884439"),
                 Name = "Customer",
                 NormalizedName = "CUSTOMER"
             }

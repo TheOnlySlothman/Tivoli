@@ -1,7 +1,7 @@
 ﻿using Tivoli.Dal.Entities;
 using Assert = Xunit.Assert;
 
-namespace Tivoli.AdminTests.Unit.Model;
+namespace Tivoli.Dal.Tests.Model;
 
 public class CardUnitTests
 {

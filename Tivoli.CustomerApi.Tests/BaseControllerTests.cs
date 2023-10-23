@@ -1,35 +1,25 @@
 ﻿using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
-using Tivoli.AdminApi;
 using Tivoli.Dal.Repo;
 using Xunit.Abstractions;
 
-namespace Tivoli.AdminTests.Integration.ApiControllers;
+namespace Tivoli.CustomerApi.Tests;
 
 public abstract class BaseControllerTests : IClassFixture<CustomWebApplicationFactory<Program>>
 {
-    protected readonly UnitOfWork UnitOfWork;
-    protected readonly DbContext Context;
     protected readonly HttpClient Client;
-    protected abstract string ControllerName { get; }
-    private readonly CustomWebApplicationFactory<Program> _factory;
     protected readonly ITestOutputHelper TestOutputHelper;
+    protected readonly CustomWebApplicationFactory<Program> Factory;
 
     protected BaseControllerTests(CustomWebApplicationFactory<Program> factory, ITestOutputHelper testOutputHelper)
     {
-        _factory = factory;
-        Client = _factory.CreateClient(new WebApplicationFactoryClientOptions
+        Client = factory.CreateClient(new WebApplicationFactoryClientOptions
         {
             AllowAutoRedirect = false
         });
 
-        using (IServiceScope scope = _factory.Services.CreateScope())
-        {
-            UnitOfWork = scope.ServiceProvider.GetRequiredService<UnitOfWork>();
-            Context = scope.ServiceProvider.GetRequiredService<DbContext>();
-        }
-
+        Factory = factory;
         TestOutputHelper = testOutputHelper;
     }
 

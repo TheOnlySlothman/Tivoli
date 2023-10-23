@@ -20,7 +20,7 @@ services.ConfigureDependencies();
 
 services.AddSwaggerGen(o =>
 {
-    o.SwaggerDoc("v1", new OpenApiInfo {Title = "Tivoli.CustomerApi", Version = "v1"});
+    o.SwaggerDoc("v1", new OpenApiInfo { Title = "Tivoli.CustomerApi", Version = "v1" });
 
     o.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
     {
@@ -70,3 +70,10 @@ app.UseAuthorization();
 app.MapControllers();
 
 app.Run();
+
+/// <summary>
+///     Redeclaration of Program class to change access modifier to public for use in tests.
+/// </summary>
+public partial class Program
+{
+}

@@ -1,4 +1,5 @@
 ﻿using Mapster;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc;
 using Tivoli.Dal.Entities;
 using Tivoli.Dal.Repo;
@@ -50,7 +51,9 @@ public abstract class BaseCrudController<T, TDto> : ControllerBase
         T entity = entityDto.Adapt<T>();
         _repo.Add(entity);
         _unitOfWork.SaveChanges();
+        HttpContext.SignOutAsync();
         return Task.FromResult<IActionResult>(Ok(entity.Adapt<TDto>()));
+        
     }
 
     /// <summary>

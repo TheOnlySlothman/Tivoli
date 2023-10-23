@@ -1,10 +1,9 @@
 ﻿using System.Linq.Expressions;
 using Microsoft.EntityFrameworkCore;
-using Tivoli.Dal;
 using Tivoli.Dal.Entities;
 using Tivoli.Dal.Repo;
 
-namespace Tivoli.AdminTests.Unit.Repo;
+namespace Tivoli.Dal.Tests.Repo;
 
 public abstract class BaseRepoUnitTests<T> : IRepoUnitTests where T : class, IEntity, new()
 {
