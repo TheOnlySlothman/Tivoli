@@ -26,7 +26,21 @@ public class CardManager
 
     public IEnumerable<CardDto> GetUserCards(Guid userId)
     {
-        IEnumerable<Card> cards = _repo.GetAll(c => c.CustomerId == userId);
+        // IEnumerable<Card> cards = _repo.GetAll(c => c.CustomerId == userId);
+        IEnumerable<Card> cards = _repo.GetCardsByCustomerId(userId);
         return cards.Adapt<IEnumerable<CardDto>>();
+    }
+
+    public bool AddBalance(Guid userId, Guid cardId, decimal amount)
+    {
+        if (amount <= 0) return false;
+        if (!_repo.Exists(cardId)) return false;
+
+        Card card = _repo.Get(cardId);
+        if (card.CustomerId != userId) return false;
+
+        card.Balance += amount;
+        _unitOfWork.SaveChanges();
+        return true;
     }
 }

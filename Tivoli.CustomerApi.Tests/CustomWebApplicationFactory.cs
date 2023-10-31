@@ -21,31 +21,23 @@ public class CustomWebApplicationFactory<TProgram> : WebApplicationFactory<TProg
                      typeof(DbContextOptions<DbContext>));
             if (dbContextOptionsDescriptor != null) services.Remove(dbContextOptionsDescriptor);
 
-            ServiceDescriptor? dbContextServiceDescriptor = services.SingleOrDefault(
+            ServiceDescriptor? tivoliContextOptionsDescriptor = services.SingleOrDefault(
+                d => d.ServiceType ==
+                     typeof(DbContextOptions<TivoliContext>));
+            if (tivoliContextOptionsDescriptor != null) services.Remove(tivoliContextOptionsDescriptor);
+
+            ServiceDescriptor? dbContextDescriptor = services.SingleOrDefault(
                 d => d.ServiceType ==
                      typeof(DbContext));
-            if (dbContextServiceDescriptor != null) services.Remove(dbContextServiceDescriptor);
+            if (dbContextDescriptor != null) services.Remove(dbContextDescriptor);
 
             ServiceDescriptor? unitOfWorkDescriptor = services.SingleOrDefault(
                 d => d.ServiceType ==
                      typeof(UnitOfWork));
             if (unitOfWorkDescriptor != null) services.Remove(unitOfWorkDescriptor);
 
-            // services.AddDbContext<DbContext, TivoliContext>(_ =>
-            // {
-            //     new DbContextOptionsBuilder()
-            //         .UseInMemoryDatabase(databaseName);
-            // });
-
-            services.AddDbContext<DbContext, TivoliContext>(options => options.UseInMemoryDatabase(databaseName));
-
-            // services.AddSingleton<DbContext, TivoliContext>(_ =>
-            // {
-            //     DbContextOptions options = new DbContextOptionsBuilder()
-            //         .UseInMemoryDatabase(databaseName)
-            //         .Options;
-            //     return new TivoliContext(options);
-            // });
+            services.AddDbContext<DbContext, TivoliContext>(options =>
+                options.UseInMemoryDatabase(databaseName));
 
             services.AddTransient<UnitOfWork>();
 

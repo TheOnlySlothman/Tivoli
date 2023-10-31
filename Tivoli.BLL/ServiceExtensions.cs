@@ -35,7 +35,7 @@ public static class ServiceExtensions
             .AddDefaultTokenProviders();
     }
 
-    public static void ConfigureJWT(this IServiceCollection services, IConfiguration configuration)
+    public static void ConfigureJwt(this IServiceCollection services, IConfiguration configuration)
     {
         IConfigurationSection jwtSettings = configuration.GetSection("Jwt");
         string? key = Environment.GetEnvironmentVariable("TivoliApiKey");

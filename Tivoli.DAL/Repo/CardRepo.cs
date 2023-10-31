@@ -11,6 +11,6 @@ public class CardRepo : BaseRepo<Card>
 
     public IEnumerable<Card> GetCardsByCustomerId(Guid customerId)
     {
-        return _dbSet.Where(c => c.CustomerId == customerId).ToList();
+        return DbSet.Where(c => c.CustomerId == customerId).ToList();
     }
 }

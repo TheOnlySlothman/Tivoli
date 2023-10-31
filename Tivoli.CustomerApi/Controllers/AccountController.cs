@@ -1,76 +1,56 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Tivoli.BLL.Models;
+using Tivoli.BLL.DTO;
 using Tivoli.BLL.Services;
-using Tivoli.Dal;
 using Tivoli.Dal.Entities;
 
 namespace Tivoli.CustomerApi.Controllers;
 
-/// <summary>
-///   Controller for the Account management.
-/// </summary>
-[AllowAnonymous]
-[ApiController]
+[Controller]
 [Route("[controller]")]
+[Authorize]
 public class AccountController : ControllerBase
 {
     private readonly UserManager<Customer> _userManager;
-    private readonly AuthManager _authManager;
-    private readonly TivoliContext _context;
+    private readonly CardManager _cardManager;
 
-    public AccountController(UserManager<Customer> userManager, AuthManager authManager, TivoliContext context)
+    public AccountController(UserManager<Customer> userManager, CardManager cardManager)
     {
         _userManager = userManager;
-        _authManager = authManager;
-        _context = context;
+        _cardManager = cardManager;
     }
 
-    [HttpPost("Register")]
-    public async Task<IActionResult> Register([FromBody] RegisterDto model)
+    // [HttpGet("CreateCard")]
+    // public IActionResult CreateCard()
+    // {
+    //     Customer? user = _userManager.GetUserAsync(User).Result;
+    //     if (user is null) return Forbid();
+    //     _cardManager.CreateCard(user);
+    //     return Ok();
+    // }
+
+    [HttpGet("Cards")]
+    [Authorize(Roles = "Customer")]
+    public IActionResult GetCards()
     {
-        if (!ModelState.IsValid) return BadRequest(ModelState.Values.SelectMany(v => v.Errors));
+        string? userId = _userManager.GetUserId(User);
 
-        Customer user = new()
-        {
-            UserName = model.Username,
-            Email = model.Username
-        };
-        IdentityResult result = await _userManager.CreateAsync(user, model.Password);
-        if (!result.Succeeded)
-        {
-            foreach (IdentityError error in result.Errors) ModelState.AddModelError(error.Code, error.Description);
+        if (userId is null) return Forbid();
 
-            return BadRequest(ModelState.Values.SelectMany(v => v.Errors));
-        }
-
-        result = await _userManager.AddToRoleAsync(user, "Customer");
-        if (result.Succeeded) return Accepted();
-
-        foreach (IdentityError error in result.Errors) ModelState.AddModelError(error.Code, error.Description);
-
-        return BadRequest(ModelState.Values.SelectMany(v => v.Errors));
+        IEnumerable<CardDto> cards = _cardManager.GetUserCards(Guid.Parse(userId));
+        return Ok(cards);
     }
 
-    [HttpPost("Login")]
-    public async Task<IActionResult> Login([FromBody] LoginDto model)
+    [HttpPut("AddBalance")]
+    [Authorize(Roles = "Customer")]
+    public IActionResult AddBalance([FromBody] AddBalanceDto addBalanceDto)
     {
-        if (!ModelState.IsValid) return BadRequest(ModelState);
-        try
-        {
-            if (!await _authManager.ValidateUser(model)) return Unauthorized();
+        string? userId = _userManager.GetUserId(User);
 
-            return Accepted(new TokenRequest
-                { Token = await _authManager.CreateToken() });
+        if (userId is null) return Forbid();
 
-            // return Accepted(new TokenRequest
-            // { Token = await _authManager.CreateToken(), RefreshToken = await _authManager.CreateRefreshToken() });
-        }
-        catch (Exception e)
-        {
-            Console.WriteLine(e);
-            throw;
-        }
+        _cardManager.AddBalance(Guid.Parse(userId), addBalanceDto.CardId, addBalanceDto.Amount);
+        return Ok();
     }
 }

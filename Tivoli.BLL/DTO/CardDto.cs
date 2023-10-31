@@ -23,6 +23,8 @@ public class CardDto : IEntity
     ///     Gets or sets the customer id.
     /// </summary>
     public Guid? CustomerId { get; set; }
+    
+    public decimal Balance { get; set; }
 
     /// <summary>
     ///    Constructor for <see cref="CardDto"/> class.

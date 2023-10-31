@@ -16,10 +16,10 @@ public class BaseRepo<T> : IRepo<T> where T : class, IEntity, new()
     /// <param name="context">Context to apply repo</param>
     public BaseRepo(DbContext context)
     {
-        _dbSet = context.Set<T>();
+        DbSet = context.Set<T>();
     }
 
-    protected readonly DbSet<T> _dbSet;
+    protected readonly DbSet<T> DbSet;
 
     /// <inheritdoc />
     /// <exception cref="ArgumentException">Id is empty.</exception>
@@ -28,7 +28,7 @@ public class BaseRepo<T> : IRepo<T> where T : class, IEntity, new()
     {
         if (id == Guid.Empty)
             throw new ArgumentException("Id cannot be empty.", nameof(id));
-        T? entity = _dbSet.Find(id);
+        T? entity = DbSet.Find(id);
         if (entity is null) throw new KeyNotFoundException($"No {typeof(T).Name} with id {id} found");
 
         return entity;
@@ -37,7 +37,7 @@ public class BaseRepo<T> : IRepo<T> where T : class, IEntity, new()
     /// <inheritdoc />
     public T? Get(Expression<Func<T, bool>> predicate)
     {
-        return _dbSet.FirstOrDefault(predicate);
+        return DbSet.FirstOrDefault(predicate);
     }
 
     /// <inheritdoc />
@@ -51,7 +51,7 @@ public class BaseRepo<T> : IRepo<T> where T : class, IEntity, new()
         if (!Exists(id)) throw new KeyNotFoundException($"No {typeof(T).Name} with id {id} found");
 
         IQueryable<T> query =
-            relations.Aggregate(_dbSet.Where(x => x.Id == id), (current, relation) => current.Include(relation));
+            relations.Aggregate(DbSet.Where(x => x.Id == id), (current, relation) => current.Include(relation));
 
         return query.First();
     }
@@ -60,7 +60,7 @@ public class BaseRepo<T> : IRepo<T> where T : class, IEntity, new()
     public T? GetWithRelated(Expression<Func<T, bool>> predicate, params Expression<Func<T, object?>>[] relations)
     {
         IQueryable<T> query =
-            relations.Aggregate(_dbSet.Where(predicate), (current, relation) => current.Include(relation));
+            relations.Aggregate(DbSet.Where(predicate), (current, relation) => current.Include(relation));
 
         return query.FirstOrDefault();
     }
@@ -71,7 +71,7 @@ public class BaseRepo<T> : IRepo<T> where T : class, IEntity, new()
     {
         if (id == Guid.Empty)
             throw new ArgumentException("Id cannot be empty.", nameof(id));
-        T? entity = _dbSet.Where(x => x.Id == id).AsNoTracking().FirstOrDefault();
+        T? entity = DbSet.Where(x => x.Id == id).AsNoTracking().FirstOrDefault();
         if (entity is null) throw new KeyNotFoundException($"No {typeof(T).Name} with id {id} found");
 
         return entity;
@@ -81,7 +81,7 @@ public class BaseRepo<T> : IRepo<T> where T : class, IEntity, new()
     /// <exception cref="ArgumentException">Id is empty.</exception>
     public T GetAsNoTracking(Expression<Func<T, bool>> predicate)
     {
-        T? entity = _dbSet.Where(predicate).AsNoTracking().FirstOrDefault();
+        T? entity = DbSet.Where(predicate).AsNoTracking().FirstOrDefault();
         if (entity is null)
             throw new ArgumentException("No entity found.", nameof(predicate));
         return entity;
@@ -90,25 +90,25 @@ public class BaseRepo<T> : IRepo<T> where T : class, IEntity, new()
     /// <inheritdoc />
     public IEnumerable<T> GetAll()
     {
-        return _dbSet;
+        return DbSet;
     }
 
     /// <inheritdoc />
     public IEnumerable<T> GetAll(Expression<Func<T, bool>> predicate)
     {
-        return _dbSet.Where(predicate);
+        return DbSet.Where(predicate);
     }
 
     /// <inheritdoc />
     public IEnumerable<T> GetAllAsNoTracking()
     {
-        return _dbSet.AsNoTracking();
+        return DbSet.AsNoTracking();
     }
 
     /// <inheritdoc />
     public IEnumerable<T> GetAllAsNoTracking(Expression<Func<T, bool>> predicate)
     {
-        return _dbSet.Where(predicate).AsNoTracking();
+        return DbSet.Where(predicate).AsNoTracking();
     }
 
     /// <inheritdoc />
@@ -117,7 +117,7 @@ public class BaseRepo<T> : IRepo<T> where T : class, IEntity, new()
     {
         if (id == Guid.Empty)
             throw new ArgumentException("Id cannot be empty.", nameof(id));
-        return _dbSet.Any(x => x.Id == id);
+        return DbSet.Any(x => x.Id == id);
     }
 
     /// <inheritdoc />
@@ -127,7 +127,7 @@ public class BaseRepo<T> : IRepo<T> where T : class, IEntity, new()
     {
         if (entity is null) throw new ArgumentNullException(nameof(entity));
         if (entity.Id != Guid.Empty && Exists(entity.Id)) throw new ArgumentException($"Entity with id {entity.Id} already exists");
-        return _dbSet.Add(entity).Entity;
+        return DbSet.Add(entity).Entity;
     }
 
     /// <inheritdoc />
@@ -138,7 +138,7 @@ public class BaseRepo<T> : IRepo<T> where T : class, IEntity, new()
         if (entity is null) throw new ArgumentNullException(nameof(entity));
 
         if (entity.Id == Guid.Empty || !Exists(entity.Id)) throw new KeyNotFoundException($"No {typeof(T).Name} with id {entity.Id} found");
-        return _dbSet.Update(entity).Entity;
+        return DbSet.Update(entity).Entity;
     }
 
     /// <inheritdoc />
@@ -149,6 +149,6 @@ public class BaseRepo<T> : IRepo<T> where T : class, IEntity, new()
         if (id == Guid.Empty)
             throw new ArgumentException("Id cannot be empty.", nameof(id));
         if (!Exists(id)) throw new KeyNotFoundException($"No {typeof(T).Name} with id {id} found");
-        _dbSet.Remove(Get(id));
+        DbSet.Remove(Get(id));
     }
 }

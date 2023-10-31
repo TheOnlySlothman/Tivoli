@@ -32,10 +32,9 @@ public class UnitOfWork : IUnitOfWork
     public CardRepo Cards { get; }
 
     /// <inheritdoc />
-    public void SaveChanges()
-    {
-        _context.SaveChanges();
-    }
+    public void SaveChanges() => _context.SaveChanges();
+
+    public async Task SaveChangesAsync() => await _context.SaveChangesAsync();
 
     /// <inheritdoc />
     public bool IsConnected()

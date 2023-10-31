@@ -13,7 +13,7 @@ public abstract class BaseControllerTests : IClassFixture<CustomWebApplicationFa
     protected readonly HttpClient Client;
     protected readonly ITestOutputHelper TestOutputHelper;
 
-    protected BaseControllerTests(CustomWebApplicationFactory<Program> factory, ITestOutputHelper testOutputHelper)
+    protected BaseControllerTests(WebApplicationFactory<Program> factory, ITestOutputHelper testOutputHelper)
     {
         Client = factory.CreateClient(new WebApplicationFactoryClientOptions
         {

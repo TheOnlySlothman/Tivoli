@@ -27,7 +27,7 @@ public abstract class BaseRepoUnitTests<T> : IRepoUnitTests where T : class, IEn
 
     protected abstract Expression<Func<T, object?>>[] GetRelations();
 
-    protected void UseDatabase(Action callback)
+    private void UseDatabase(Action callback)
     {
         try
         {

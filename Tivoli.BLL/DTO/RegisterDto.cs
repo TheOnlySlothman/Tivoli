@@ -1,4 +1,4 @@
-﻿namespace Tivoli.BLL.Models;
+﻿namespace Tivoli.BLL.DTO;
 
 public class RegisterDto
 {

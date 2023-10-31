@@ -13,8 +13,10 @@ services.AddDbContext<DbContext, TivoliContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("sqlConnection")));
 
 services.AddAuthentication();
+services.AddAuthorization();
+
 services.ConfigureIdentity();
-services.ConfigureJWT(builder.Configuration);
+services.ConfigureJwt(builder.Configuration);
 
 services.ConfigureDependencies();
 
@@ -65,15 +67,20 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
 
 app.Run();
 
-/// <summary>
-///     Redeclaration of Program class to change access modifier to public for use in tests.
-/// </summary>
-public partial class Program
+namespace Tivoli.CustomerApi
 {
+    /// <summary>
+    ///     Redeclaration of Program class to change access modifier to public for use in tests.
+    /// </summary>
+    // ReSharper disable once ClassNeverInstantiated.Global
+    public partial class Program
+    {
+    }
 }

@@ -1,4 +1,4 @@
-﻿using Tivoli.BLL.Models;
+﻿using Tivoli.BLL.DTO;
 
 namespace Tivoli.BLL.Services;
 

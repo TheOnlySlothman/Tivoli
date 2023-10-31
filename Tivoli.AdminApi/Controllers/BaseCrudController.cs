@@ -53,7 +53,6 @@ public abstract class BaseCrudController<T, TDto> : ControllerBase
         _unitOfWork.SaveChanges();
         HttpContext.SignOutAsync();
         return Task.FromResult<IActionResult>(Ok(entity.Adapt<TDto>()));
-        
     }
 
     /// <summary>

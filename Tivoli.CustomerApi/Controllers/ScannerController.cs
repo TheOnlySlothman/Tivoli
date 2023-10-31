@@ -4,12 +4,9 @@ using Microsoft.AspNetCore.Mvc;
 namespace Tivoli.CustomerApi.Controllers;
 
 [Controller]
+[Route("[controller]")]
 [Authorize]
-public class CustomerController : ControllerBase
+public class ScannerController : ControllerBase
 {
-    [HttpGet]
-    public async Task<IActionResult> GetCustomer()
-    {
-        return Ok();
-    }
+    
 }

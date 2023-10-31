@@ -4,7 +4,7 @@ using System.Text;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
-using Tivoli.BLL.Models;
+using Tivoli.BLL.DTO;
 using Tivoli.Dal.Entities;
 
 namespace Tivoli.BLL.Services;
@@ -41,7 +41,7 @@ public class AuthManager : IAuthManager
     }
 
 
-    private SigningCredentials GetSigningCredentials()
+    private static SigningCredentials GetSigningCredentials()
     {
         string? key = Environment.GetEnvironmentVariable("TivoliApiKey");
         SymmetricSecurityKey secret = new(Encoding.UTF8.GetBytes(key ?? throw new InvalidOperationException()));
@@ -64,7 +64,7 @@ public class AuthManager : IAuthManager
         return claims;
     }
 
-    private SecurityToken GenerateTokenOptions(SigningCredentials signingCredentials, List<Claim> claims)
+    private SecurityToken GenerateTokenOptions(SigningCredentials signingCredentials, IEnumerable<Claim> claims)
     {
         IConfigurationSection jwtSettings = _configuration.GetSection("Jwt");
         JwtSecurityToken token = new(

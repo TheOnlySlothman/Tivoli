@@ -8,7 +8,7 @@ public class CustomerUnitTests
     public void ConstructCustomer()
     {
         // Arrange
-        string data = string.Join("", Enumerable.Range(0, 1024).Select(x => (char)(byte)x));;
+        string data = string.Join("", Enumerable.Range(0, 1024).Select(x => (char)(byte)x));
 
         Card card = new(data);
 

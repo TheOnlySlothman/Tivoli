@@ -48,4 +48,6 @@ public class Card : IEntity
     /// <param name="block">Block of card.</param>
     /// <param name="byte">Byte of card.</param>
     public byte this[int sector, int block, int @byte] => (byte)CardData[sector * 64 + block * 16 + @byte];
+
+    public decimal Balance { get; set; } = 0;
 }
