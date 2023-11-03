@@ -50,7 +50,8 @@ public class AccountController : ControllerBase
 
         if (userId is null) return Forbid();
 
-        _cardManager.AddBalance(Guid.Parse(userId), addBalanceDto.CardId, addBalanceDto.Amount);
+        var result = _cardManager.AddBalance(Guid.Parse(userId), addBalanceDto.CardId, addBalanceDto.Amount);
+        
         return Ok();
     }
 }

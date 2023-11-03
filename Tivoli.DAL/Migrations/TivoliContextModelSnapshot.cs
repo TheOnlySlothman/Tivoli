@@ -17,7 +17,7 @@ namespace Tivoli.Dal.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "7.0.11")
+                .HasAnnotation("ProductVersion", "7.0.13")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
@@ -52,7 +52,7 @@ namespace Tivoli.Dal.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("1d21eddf-d12e-4cef-9c33-4c2c76451a8d"),
+                            Id = new Guid("28f16864-f3ed-4c23-a0c2-ff952d884439"),
                             Name = "Customer",
                             NormalizedName = "CUSTOMER"
                         });
@@ -161,11 +161,14 @@ namespace Tivoli.Dal.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("Tivoli.Models.Entity.Card", b =>
+            modelBuilder.Entity("Tivoli.Dal.Entities.Card", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
+
+                    b.Property<decimal>("Balance")
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<string>("CardData")
                         .IsRequired()
@@ -181,7 +184,7 @@ namespace Tivoli.Dal.Migrations
                     b.ToTable("Cards");
                 });
 
-            modelBuilder.Entity("Tivoli.Models.Entity.Customer", b =>
+            modelBuilder.Entity("Tivoli.Dal.Entities.Customer", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -258,7 +261,7 @@ namespace Tivoli.Dal.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<System.Guid>", b =>
                 {
-                    b.HasOne("Tivoli.Models.Entity.Customer", null)
+                    b.HasOne("Tivoli.Dal.Entities.Customer", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -267,7 +270,7 @@ namespace Tivoli.Dal.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<System.Guid>", b =>
                 {
-                    b.HasOne("Tivoli.Models.Entity.Customer", null)
+                    b.HasOne("Tivoli.Dal.Entities.Customer", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -282,7 +285,7 @@ namespace Tivoli.Dal.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Tivoli.Models.Entity.Customer", null)
+                    b.HasOne("Tivoli.Dal.Entities.Customer", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -291,23 +294,23 @@ namespace Tivoli.Dal.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<System.Guid>", b =>
                 {
-                    b.HasOne("Tivoli.Models.Entity.Customer", null)
+                    b.HasOne("Tivoli.Dal.Entities.Customer", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Tivoli.Models.Entity.Card", b =>
+            modelBuilder.Entity("Tivoli.Dal.Entities.Card", b =>
                 {
-                    b.HasOne("Tivoli.Models.Entity.Customer", "Customer")
+                    b.HasOne("Tivoli.Dal.Entities.Customer", "Customer")
                         .WithMany("Cards")
                         .HasForeignKey("CustomerId");
 
                     b.Navigation("Customer");
                 });
 
-            modelBuilder.Entity("Tivoli.Models.Entity.Customer", b =>
+            modelBuilder.Entity("Tivoli.Dal.Entities.Customer", b =>
                 {
                     b.Navigation("Cards");
                 });

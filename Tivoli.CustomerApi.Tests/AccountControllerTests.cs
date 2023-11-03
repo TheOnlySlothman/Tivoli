@@ -14,9 +14,9 @@ using Xunit.Abstractions;
 
 namespace Tivoli.CustomerApi.Tests;
 
-public class CardControllerTests : BaseCrudControllerTests<Card, CardDto>
+public class AccountControllerTests : BaseCrudControllerTests<Card, CardDto>
 {
-    public CardControllerTests(CustomWebApplicationFactory<Program> factory, ITestOutputHelper testOutputHelper) : base(
+    public AccountControllerTests(CustomWebApplicationFactory<Program> factory, ITestOutputHelper testOutputHelper) : base(
         factory, testOutputHelper)
     {
     }
@@ -156,7 +156,7 @@ public class CardControllerTests : BaseCrudControllerTests<Card, CardDto>
 
     private async Task Login(string username = "Test@Test.dk", string password = "Test123.")
     {
-        HttpResponseMessage result = await Client.PostAsync(CombineUrl("Account", "Login"),
+        HttpResponseMessage result = await Client.PostAsync(CombineUrl("Auth", "Login"),
             new StringContent(JsonSerializer.Serialize(new LoginDto(username, password)), Encoding.UTF8,
                 "application/json"));
 
